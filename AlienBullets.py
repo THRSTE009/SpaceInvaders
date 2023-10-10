@@ -7,7 +7,7 @@ from Explosion import Explosion
 
 
 class AlienBullets(pygame.sprite.Sprite):
-    def __init__(self, x, y, screen_height, spaceship, spaceship_group, explosion_group):
+    def __init__(self, x, y, screen_height, spaceship, spaceship_group, explosion_group, explosion_fx2):
         # super().__init__( x, y)
         pygame.sprite.Sprite.__init__(self)
         self.screen_height = screen_height
@@ -18,6 +18,7 @@ class AlienBullets(pygame.sprite.Sprite):
         self.spaceship = spaceship
         self.spaceship_group = spaceship_group
         self.explosion_group = explosion_group
+        self.explosion_fx2 = explosion_fx2
 
     def update(self):
         self.rect.y += 2
@@ -30,3 +31,4 @@ class AlienBullets(pygame.sprite.Sprite):
             self.spaceship.health_remaining -= 1    # Reduce spaceship health
             explosion = Explosion(self.rect.centerx, self.rect.centery, 1)
             self.explosion_group.add(explosion)
+            self.explosion_fx2.play()

@@ -6,7 +6,7 @@ from Explosion import Explosion
 
 class Spaceship(pygame.sprite.Sprite):
     def __init__(self, screen, screen_width, screen_height, x, y, red, green, health,
-                 bullet_group, alien_group, explosion_group):
+                 bullet_group, alien_group, explosion_group, laser, explosion_fx1, game_over):
         pygame.sprite.Sprite.__init__(self)  # inherit Sprite class within the Spaceship class.
         self.mask = None
         self.screen = screen
@@ -29,6 +29,11 @@ class Spaceship(pygame.sprite.Sprite):
         self.alien_group = alien_group
         self.explosion_group = explosion_group
 
+        self.laser = laser
+        self.explosion_fx1 = explosion_fx1
+
+        self.game_over = game_over
+
     def update(self):
         speed = 6
         bullet_cooldown = 500  # milliseconds.
@@ -45,9 +50,12 @@ class Spaceship(pygame.sprite.Sprite):
 
         # Shoot
         if key[pygame.K_SPACE] and (time_now - self.last_shot > bullet_cooldown):
-            bullet = Bullets(self.rect.centerx, self.rect.top, self.alien_group, self.explosion_group)
+            bullet = Bullets(self.rect.centerx, self.rect.top,
+                             self.alien_group, self.explosion_group,
+                             self.explosion_fx1)
             self.bullet_group.add(bullet)
             self.last_shot = time_now
+            self.laser.play()
 
         # Update Mask for perfect pixel collision detection.
         self.mask = pygame.mask.from_surface(self.image)
@@ -62,3 +70,7 @@ class Spaceship(pygame.sprite.Sprite):
             explosion = Explosion(self.rect.centerx, self.rect.centery, 3)
             self.explosion_group.add(explosion)
             self.kill()
+            self.explosion_fx1.play()
+            self.game_over = 2
+
+        return self.game_over

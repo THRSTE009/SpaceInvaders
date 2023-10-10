@@ -3,7 +3,7 @@ from Explosion import Explosion
 
 
 class Bullets(pygame.sprite.Sprite):
-    def __init__(self, x, y, alien_group, explosion_group):
+    def __init__(self, x, y, alien_group, explosion_group, explosion_fx1):
         self.sprite = pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("assets/bullet.png")
         self.rect = self.image.get_rect()
@@ -11,6 +11,7 @@ class Bullets(pygame.sprite.Sprite):
 
         self.alien_group = alien_group
         self.explosion_group = explosion_group
+        self.explosion_fx1 = explosion_fx1
 
     def update(self):
         self.rect.y -= 5
@@ -22,3 +23,4 @@ class Bullets(pygame.sprite.Sprite):
             self.kill()  # ensures bullets destroy themselves upon contact.
             explosion = Explosion(self.rect.centerx, self.rect.centery, 2)
             self.explosion_group.add(explosion)
+            self.explosion_fx1.play()
